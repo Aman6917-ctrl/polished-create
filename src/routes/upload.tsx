@@ -38,8 +38,6 @@ function UploadPage() {
     navigate({ to: "/analyzing" });
   }
 
-  if (!user) return null;
-
   return (
     <div className="min-h-screen">
       <SiteNav />
