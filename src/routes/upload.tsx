@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SiteFooter, SiteNav } from "@/components/site-nav";
-import { useAuth } from "@/hooks/use-auth";
 import { Upload } from "lucide-react";
 
 export const Route = createFileRoute("/upload")({
