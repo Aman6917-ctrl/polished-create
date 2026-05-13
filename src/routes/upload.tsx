@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SiteFooter, SiteNav } from "@/components/site-nav";
-import { useAuth } from "@/hooks/use-auth";
 import { Upload } from "lucide-react";
 
 export const Route = createFileRoute("/upload")({
@@ -10,7 +9,6 @@ export const Route = createFileRoute("/upload")({
 });
 
 function UploadPage() {
-  const user = useAuth();
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [age, setAge] = useState("");
@@ -18,13 +16,6 @@ function UploadPage() {
   const [xai, setXai] = useState<"gradcam" | "shap" | "lime">("gradcam");
   const [err, setErr] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      if (!localStorage.getItem("neuroclear_auth")) navigate({ to: "/login" });
-    }, 0);
-    return () => clearTimeout(t);
-  }, [navigate]);
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -46,8 +37,6 @@ function UploadPage() {
     );
     navigate({ to: "/analyzing" });
   }
-
-  if (!user) return null;
 
   return (
     <div className="min-h-screen">
