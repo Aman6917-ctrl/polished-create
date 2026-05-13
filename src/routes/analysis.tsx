@@ -1,7 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter, SiteNav } from "@/components/site-nav";
-import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/analysis")({
   component: Analysis,
@@ -9,17 +7,6 @@ export const Route = createFileRoute("/analysis")({
 });
 
 function Analysis() {
-  const user = useAuth();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user === null) {
-      // give hook one tick to hydrate; if still null after mount, redirect
-      const id = setTimeout(() => {
-        if (!localStorage.getItem("neuroclear_auth")) navigate({ to: "/login" });
-      }, 0);
-      return () => clearTimeout(id);
-    }
-  }, [user, navigate]);
 
   return (
     <div className="min-h-screen">
