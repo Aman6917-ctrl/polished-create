@@ -21,6 +21,9 @@ type Result = {
   predictionLabel: string;
   confidence: number;
   probs: { cn: number; mci: number; ad: number };
+  previewImageDataUrl?: string;
+  heatmapDataUrl?: string | null;
+  xaiNote?: string | null;
 };
 
 const xaiName = { gradcam: "Grad-CAM", shap: "SHAP", lime: "LIME" };
@@ -65,7 +68,14 @@ function ResultPage() {
           {/* Left column - scan & metadata */}
           <aside className="space-y-4 lg:col-span-4">
             <div className="overflow-hidden rounded-3xl border border-border/60 bg-card shadow-soft">
-              <img src={mriSample} alt="Uploaded MRI scan" width={768} height={768} loading="lazy" className="aspect-square w-full object-cover" />
+              <img
+                src={r.previewImageDataUrl ?? mriSample}
+                alt="Uploaded MRI scan"
+                width={768}
+                height={768}
+                loading="lazy"
+                className="aspect-square w-full object-cover"
+              />
               <div className="p-5">
                 <p className="truncate text-sm font-semibold text-clinical-900">{r.fileName}</p>
                 <p className="text-xs text-muted-foreground">{(r.fileSize / 1024 / 1024).toFixed(2)} MB</p>
@@ -84,9 +94,17 @@ function ResultPage() {
                   <span>Predicted: {r.prediction}</span>
                   <span>CN {r.probs.cn.toFixed(2)} · MCI {r.probs.mci.toFixed(2)} · AD {r.probs.ad.toFixed(2)}</span>
                 </div>
-                <img src={gradcamSample} alt={`${xaiName[r.xai]} heatmap`} width={768} height={768} loading="lazy" className="aspect-square w-full object-cover" />
+                <img
+                  src={r.heatmapDataUrl ?? gradcamSample}
+                  alt={`${xaiName[r.xai]} heatmap`}
+                  width={768}
+                  height={768}
+                  loading="lazy"
+                  className="aspect-square w-full object-cover"
+                />
               </div>
               <p className="mt-3 text-xs font-semibold text-clinical-900">Highlighted MRI regions</p>
+              {r.xaiNote ? <p className="mt-2 text-xs text-muted-foreground">{r.xaiNote}</p> : null}
             </InfoCard>
           </aside>
 

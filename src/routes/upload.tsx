@@ -25,17 +25,24 @@ function UploadPage() {
     if (!a || a < 40 || a > 100) return setErr("Age must be between 40 and 100.");
     if (!gender) return setErr("Please select gender.");
 
-    sessionStorage.setItem(
-      "neuroclear_pending",
-      JSON.stringify({
-        fileName: file.name,
-        fileSize: file.size,
-        age: a,
-        gender,
-        xai,
-      }),
-    );
-    navigate({ to: "/analyzing" });
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      sessionStorage.setItem(
+        "neuroclear_pending",
+        JSON.stringify({
+          fileName: file.name,
+          fileSize: file.size,
+          age: a,
+          gender,
+          xai,
+        }),
+      );
+      sessionStorage.setItem("neuroclear_pending_image", dataUrl);
+      navigate({ to: "/analyzing" });
+    };
+    reader.onerror = () => setErr("Could not read the file.");
+    reader.readAsDataURL(file);
   }
 
   return (
@@ -143,6 +150,7 @@ function UploadPage() {
                 setGender("");
                 setXai("gradcam");
                 setErr(null);
+                sessionStorage.removeItem("neuroclear_pending_image");
               }}
               className="rounded-xl border border-border bg-background px-7 py-3 font-semibold text-clinical-900 hover:bg-accent"
             >

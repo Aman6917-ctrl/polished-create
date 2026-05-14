@@ -65,6 +65,13 @@ export default defineConfig(({ command, mode }) => {
           pollInterval: 100,
         },
       },
+      proxy: {
+        "/api/ml": {
+          target: "http://127.0.0.1:8765",
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/api\/ml/, "") || "/",
+        },
+      },
     },
   };
 });

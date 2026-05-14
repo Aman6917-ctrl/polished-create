@@ -3,13 +3,22 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "ml:pip": "python3 -m pip install -r ml/requirements.txt",
+    "ml:train": "python3 ml/train.py",
+    "ml:demo-data": "python3 ml/scripts/gen_dummy_data.py",
+    "ml:metadata": "python3 ml/scripts/write_final_metadata_csv.py",
+    "ml:slice-placeholders": "python3 ml/scripts/gen_slices_from_metadata.py",
+    "ml:api": "python3 -m uvicorn ml.inference_api:app --host 127.0.0.1 --port 8765"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
